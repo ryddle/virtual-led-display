@@ -1,4 +1,6 @@
-# VIrtual Led Display
+# Virtual Led Display
+
+Forked from [Erik](/ErikGuerrero)'s Pen [VIrtual Led Display](/ErikGuerrero/pen/cmtJb/).
 
 Originally created on CodePen.io. Original URL: [https://codepen.io/dogen-gen/pen/KKLKppd](https://codepen.io/dogen-gen/pen/KKLKppd).
 
@@ -12,5 +14,3 @@ Originally created on CodePen.io. Original URL: [https://codepen.io/dogen-gen/pe
 * Add a click callback
 * Two modes, development and production
 * You can change the color on live
-
-Forked from [Erik](/ErikGuerrero)'s Pen [VIrtual Led Display](/ErikGuerrero/pen/cmtJb/).
