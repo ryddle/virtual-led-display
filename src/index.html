@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - VIrtual Led Display</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+
+<body>
+  <!-- partial:index.partial.html -->
+  <h1 style>Led Display</h1>
+  <div id="base" class="base">
+    <div id="matrix" class="matrix"></div>
+    <input type="number" id="pixels" value="5"></input><button onClick="vledDiplay.getCoordsChar(document.getElementById('pixels').value)">Get coords</button>
+    <button onClick="vledDiplay.rotate('left')">Left</button>
+    <input type="number" id="startanimindex" value="0"></input>
+    <button onClick="vledDiplay.rotate('right')">Right</button>
+    <button onClick="vledDiplay.stop()">Stop</button>
+    <button onClick="vledDiplay.clearM()">Clear</button>
+    <button onClick="vledDiplay.fill()">fill</button>
+    <input id="text" type="text" name="text" value="10.Nightwish - ♥ - Kuolema_Tekee_Taiteilijan.mp3"></input><button onClick="vledDiplay.drawText(document.getElementById('text').value, document.getElementById('startindex').value, document.getElementById('endindex').value)">Draw</button>
+    from<input type="number" id="startindex" value="0"></input>to<input type="number" id="endindex" value="-1"></input>
+    <br>
+    <input type="color" id="color" value="#ff0000" onchange="changeColor(this.value)">
+    <br>
+    <button onclick="clockRibbon()">Clock + ribbon</button><button onclick="changeClockRibbon()">Change ribbon</button>
+  </div>
+  <div id="demo"></div>
+  <!-- partial -->
+  <script src="./xvirtualleddisplay.js"></script>
+  <script src="./script.js"></script>
+
+</body>
+
+</html>
