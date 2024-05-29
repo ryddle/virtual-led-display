@@ -52,7 +52,7 @@ function changeClockRibbon() {
 
   //start_index = 35;
   //end_index = -1;
-  vledDiplay.drawText(document.getElementById("text").value, 30, -1);
+  vledDiplay.drawText(document.getElementById("text").valueAsNumber, 30, -1);
 
   timer = setInterval(clockTimer, 1000);
 }
@@ -66,3 +66,8 @@ function clockTimer() {
 }
 
 
+function clearVLD() {
+  vledDiplay.clearM();
+  clearInterval(timer);
+  timer = 0;
+}

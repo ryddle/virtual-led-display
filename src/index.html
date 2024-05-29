@@ -18,9 +18,9 @@
     <input type="number" id="startanimindex" value="0"></input>
     <button onClick="vledDiplay.rotate('right')">Right</button>
     <button onClick="vledDiplay.stop()">Stop</button>
-    <button onClick="vledDiplay.clearM()">Clear</button>
+    <button onClick="clearVLD()">Clear</button>
     <button onClick="vledDiplay.fill()">fill</button>
-    <input id="text" type="text" name="text" value="10.Nightwish - ♥ - Kuolema_Tekee_Taiteilijan.mp3"></input><button onClick="vledDiplay.drawText(document.getElementById('text').value, document.getElementById('startindex').value, document.getElementById('endindex').value)">Draw</button>
+    <input id="text" type="text" name="text" value="10.Nightwish - ♥ - Kuolema_Tekee_Taiteilijan.mp3"></input><button onClick="vledDiplay.drawText(document.getElementById('text').value, document.getElementById('startindex').valueAsNumber, document.getElementById('endindex').valueAsNumber)">Draw</button>
     from<input type="number" id="startindex" value="0"></input>to<input type="number" id="endindex" value="-1"></input>
     <br>
     <input type="color" id="color" value="#ff0000" onchange="changeColor(this.value)">
