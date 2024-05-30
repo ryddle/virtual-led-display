@@ -106,3 +106,16 @@ function clearVLD() {
   clearInterval(timer);
   timer = 0;
 }
+
+
+///////////////////////////////////////////////////////////////
+var lcdTimer = 0;
+var vlcdDisplay = new XVirtualLcdDisplay(document.getElementById("vlcdcontainer"), 160, 8, 'red', 'black');
+var now = new Date();
+vlcdDisplay.setText(now.getHours() + " " + now.getMinutes() + " " + now.getSeconds());
+lcdTimer = setInterval(clockLcd, 1000);
+
+function clockLcd() {
+  now = new Date();
+  vlcdDisplay.setText(("0" + now.getHours()).slice(-2) + ":" + ("0" + now.getMinutes()).slice(-2) + ":" + ("0" + now.getSeconds()).slice(-2));
+}
