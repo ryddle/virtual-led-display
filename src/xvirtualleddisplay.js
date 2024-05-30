@@ -55,17 +55,21 @@ const Array2D = (r, c) => [...Array(r)].map(_ => Array(c).fill(0));
 
 class XVirtualLedDisplay {
     #options = {
-        'mode': 'production' // 'production' or 'development'    
+        'mode': 'production', // 'production' or 'development'
+        'width': 625,
+        'height': 60
     };
     constructor(container_, options_) {
-        this.container = container_!=null?container_:document.body;
-        this.#createMatrixContainer();
+        this.container = container_ != null ? container_ : document.body;
         if (options_ !== undefined && typeof (options_) == 'object') {
-            Object.assign(this - this.#options, options_);
+            Object.assign(this.#options, options_);
         }
 
+        this.lineheight = 5;
         this.rowlength = 7;
         this.collength = 89;
+
+        this.#createMatrixContainer();
 
         this.mat = Array2D(this.rowlength, this.collength);
         this.vmat = new Array();
@@ -100,8 +104,7 @@ class XVirtualLedDisplay {
             );
         }
 
-        this.__led = document.createElement('div');
-        this.__led.className = 'led';
+        this.__led = this.#createLed();
 
         for (var i = 0; i < 7; i++) {
             this.mat[i] = this.newLine();
@@ -110,9 +113,39 @@ class XVirtualLedDisplay {
 
     #createMatrixContainer() {
         this.matrix = document.createElement('div');
-        this.matrix.id='matrix';
+        this.matrix.id = 'matrix';
         this.matrix.className = 'matrix';
+        this.matrix.style.alignContent = 'center';
+        if (this.#options.width) {
+            this.matrix.style.width = this.#options.width + 'px';
+        }
+        if (this.#options.height) {
+            this.matrix.style.height = this.#options.height + 'px';
+        }
+        this.lineheight = Math.floor((this.#options.height - (this.rowlength * 2)) / this.rowlength);
+        this.collength = Math.floor(this.#options.width / (this.lineheight + 2));
+        var root = document.querySelector(':root');
+        var rs = getComputedStyle(root);
+        root.style.setProperty('--lineheight', this.lineheight + 'px');
+
+        this.matrix.style.fontSize = this.lineheight + 'px';
+        this.matrix.style.lineHeight = '0.8em';
+
         this.container.appendChild(this.matrix);
+    }
+
+    #createLed() {
+        var led = document.createElement('div');
+        led.className = 'led';
+        Object.assign(led.style, {
+            width: this.lineheight + 'px',
+            height: this.lineheight + 'px',
+            WebkitBoxShadow: '0px 0px 0px 0px rgba(255, 255, 190, .75)',
+            MozBoxShadow: '0px 0px 0px 0px rgba(255, 255, 190, .75)',
+            boxShadow: '0px 0px 0px 0px rgba(255, 255, 190, .75)'
+        });
+
+        return led;
     }
 
     newLine() {
@@ -121,8 +154,8 @@ class XVirtualLedDisplay {
         for (var i = 0; i < this.collength; i++) {
             var led = this.__led.cloneNode();
             if (this.#options.mode == 'development') {
-                led.onclick = function() { self.onOff(this) };
-                led.onmouseover= function() {
+                led.onclick = function () { self.onOff(this) };
+                led.onmouseover = function () {
                     if (isDrawing) {
                         this.className = "led";
                     }
@@ -137,22 +170,42 @@ class XVirtualLedDisplay {
 
     // Tturning on/off
     onOff(led) {
-        if (led.className == "led off")
-            led.className = "led";
-        else
-            led.className = "led off";
+        if (led.className == "led off") {
+            this.on(led);
+        } else {
+            this.off(led);
+        }
+    }
+
+    on(led) {
+        led.className = "led";
+        Object.assign(led.style, {
+            WebkitBoxShadow: '0px 0px ' + this.lineheight * 1.6 + 'px ' + this.lineheight * 0.6 + 'px rgba(var(--primary-color, var(--xvld-primary-color, rgb(255, 0, 0))), .75)',
+            MozBoxShadow: '0px 0px ' + this.lineheight * 1.6 + 'px ' + this.lineheight * 0.6 + 'px rgba(var(--primary-color, var(--xvld-primary-color, rgb(255, 0, 0))), .75)',
+            boxShadow: '0px 0px ' + this.lineheight * 1 + 'px ' + this.lineheight * 0.2 + 'px rgba(var(--primary-color, var(--xvld-primary-color, rgb(255, 0, 0))), .75)'
+        });
+    }
+
+    off(led) {
+        let _bs = '0px 0px 0px 0px rgba(255, 255, 190, .75)';
+        led.className = "led off";
+        Object.assign(led.style, {
+            WebkitBoxShadow: _bs,
+            MozBoxShadow: _bs,
+            boxShadow: _bs
+        });
     }
 
     write(arr) {
         var i = 0;
         while (i < arr.length) {
-            this.mat[arr[i++]][arr[i++]].className = "led";
+            this.on(this.mat[arr[i++]][arr[i++]]);
         }
     }
 
     drawText(text_, start_index_, end_index_) {
-        this.start_index = (start_index_!==undefined && start_index_!=null && start_index_>-1)?start_index_:this.start_index;
-        this.end_index = (end_index_!==undefined && end_index_!=null && (end_index_==-1 || end_index_>0))?end_index_:this.end_index;
+        this.start_index = (start_index_ !== undefined && start_index_ != null && start_index_ > -1) ? start_index_ : this.start_index;
+        this.end_index = (end_index_ !== undefined && end_index_ != null && (end_index_ == -1 || end_index_ > 0)) ? end_index_ : this.end_index;
         if (this.start_index > 0 && (this.end_index != -1 && this.end_index < this.start_index)) {
             alert("End index must be greater than start index or -1(-1==end of text)");
             return;
@@ -241,7 +294,7 @@ class XVirtualLedDisplay {
         for (var i = 0; i < this.mat.length; i++) {
             var max = (this.end_index == -1) ? (this.mat[i].length - 1) : this.end_index;
             for (var j = 0 + this.start_index; j < max; j++) {
-                this.mat[i][j].className = (this.vmat[i][j] == 1) ? "led" : "led off";
+                (this.vmat[i][j] == 1) ? this.on(this.mat[i][j]) : this.off(this.mat[i][j]);
             }
         }
     }
@@ -251,7 +304,9 @@ class XVirtualLedDisplay {
         clearInterval(this.rotationR);
         clearInterval(this.timer);
         this.rotationL = 0;
+        this.leftOffset = 0;
         this.rotationR = 0;
+        this.rightOffset = 0;
         this.timer = 0;
     }
 
@@ -273,9 +328,10 @@ class XVirtualLedDisplay {
     moveLeft0() {
         for (var i = 0; i < this.mat.length; i++) {
             var first = this.mat[i][0].className;
-            for (var j = 0; j < this.mat[i].length - 1; j++)
-                this.mat[i][j].className = this.mat[i][j + 1].className;
-            this.mat[i][this.mat[i].length - 1].className = first;
+            for (var j = 0; j < this.mat[i].length - 1; j++){
+                (this.mat[i][j + 1].className == "led") ? this.on(this.mat[i][j]) : this.off(this.mat[i][j]);
+            }
+            (first == "led") ? this.on(this.mat[i][this.mat[i].length - 1]) : this.off(this.mat[i][this.mat[i].length - 1]);
         }
     }
 
@@ -285,7 +341,8 @@ class XVirtualLedDisplay {
         for (var i = 0; i < this.mat.length; i++) {
             var calcLeftOffset = this.leftOffset + this.start_anim_index;
             for (var j = calcLeftOffset; j < this.mat[i].length + this.leftOffset - 1; j++) {
-                this.mat[i][(j - this.leftOffset) % this.vmatrowlength].className = (this.vmat[i][((j - this.start_anim_index + 1) % (this.vmatrowlength)) + this.start_anim_index] == 1) ? "led" : "led off";
+                var _led =this.mat[i][(j - this.leftOffset) % this.vmatrowlength];
+                (this.vmat[i][((j - this.start_anim_index + 1) % (this.vmatrowlength)) + this.start_anim_index] == 1) ? this.on(_led) : this.off(_led);
             }
         }
         this.leftOffset++;
@@ -298,36 +355,42 @@ class XVirtualLedDisplay {
         if (this.vmatrowlength < this.collength) { this.moveRight0(); return; }
 
         for (var i = 0; i < this.mat.length; i++) {
-            var last = this.vmat[i][vmat[i].length - 1];
-            for (var j = this.rightOffset; j < this.mat[i].length + this.rightOffset - 1; j++)
-                this.mat[i][(j - this.rightOffset) % this.vmatrowlength].className = (this.vmat[i][(j - 1) % this.vmatrowlength] == 1) ? "led" : "led off";
-            this.mat[i][mat[i].length - 1].className = last;
+            var calcRightOffset = this.rightOffset + this.start_anim_index;
+            for (var j = calcRightOffset; j < this.mat[i].length + this.rightOffset - 1; j++){
+                var _led =this.mat[i][(j - this.rightOffset) % this.vmatrowlength];
+                (this.vmat[i][(j - (this.start_anim_index + 1)) % this.vmatrowlength] == 1) ? this.on(_led) : this.off(_led);
+            }
         }
         this.rightOffset--;
-        if (rightOffset <= 0) {
+        if (this.rightOffset <= 0) {
             this.rightOffset = this.vmatrowlength;
         }
     }
 
     moveRight0() {
         for (var i = 0; i < this.mat.length; i++) {
-            var last = this.mat[i][mat[i].length - 1].className;
-            for (var j = this.mat[i].length - 1; j > 0; j--)
-                this.mat[i][j].className = this.mat[i][j - 1].className;
-            this.mat[i][0].className = last;
+            var last = this.mat[i][this.mat[i].length - 1].className;
+            for (var j = this.mat[i].length - 1; j > 0; j--){
+                (this.mat[i][j - 1].className == "led") ? this.on(this.mat[i][j]) : this.off(this.mat[i][j]);
+            }
+            (last == "led") ? this.on(this.mat[i][0]) : this.off(this.mat[i][0]);
         }
     }
 
     clearM() {
-        for (var i = 0; i < this.mat.length; i++)
-            for (var j = 0; j < this.mat[i].length; j++)
-                this.mat[i][j].className = "led off";
+        for (var i = 0; i < this.mat.length; i++){
+            for (var j = 0; j < this.mat[i].length; j++){
+                this.off(this.mat[i][j]);
+            }
+        }
     }
 
     fill() {
-        for (var i = 0; i < this.mat.length; i++)
-            for (var j = 0; j < this.mat[i].length; j++)
-                this.mat[i][j].className = "led";
+        for (var i = 0; i < this.mat.length; i++){
+            for (var j = 0; j < this.mat[i].length; j++){
+                this.on(this.mat[i][j]);
+            }
+        }
     }
 
     printFormattedMatrix(matrix) {
