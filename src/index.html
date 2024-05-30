@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <title>CodePen - VIrtual Led Display</title>
   <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./xvirtualleddisplay.css">
 
 </head>
 
@@ -12,22 +13,28 @@
   <!-- partial:index.partial.html -->
   <h1 style>Led Display</h1>
   <div id="base" class="base">
-    <div id="matrix" class="matrix"></div>
-    <input type="number" id="pixels" value="5"></input><button onClick="vledDiplay.getCoordsChar(document.getElementById('pixels').value)">Get coords</button>
-    <button onClick="vledDiplay.rotate('left')">Left</button>
-    <input type="number" id="startanimindex" value="0"></input>
-    <button onClick="vledDiplay.rotate('right')">Right</button>
-    <button onClick="vledDiplay.stop()">Stop</button>
-    <button onClick="clearVLD()">Clear</button>
-    <button onClick="vledDiplay.fill()">fill</button>
-    <input id="text" type="text" name="text" value="10.Nightwish - ♥ - Kuolema_Tekee_Taiteilijan.mp3"></input><button onClick="vledDiplay.drawText(document.getElementById('text').value, document.getElementById('startindex').valueAsNumber, document.getElementById('endindex').valueAsNumber)">Draw</button>
-    from<input type="number" id="startindex" value="0"></input>to<input type="number" id="endindex" value="-1"></input>
-    <br>
+    <input type="number" id="pixels" value="5"> <button onclick="vledDiplay.getCoordsChar(document.getElementById('pixels').value)">Get coords</button>
+    <br><br>
+    <button onclick="vledDiplay.rotate('left')">Left</button>
+    <input type="number" id="startanimindex" value="0">
+    <button onclick="vledDiplay.rotate('right')">Right</button>
+    <button onclick="vledDiplay.stop()">Stop</button>
+    <br><br>
+    <button onclick="clearVLD()">Clear</button> 
+    <button onclick="vledDiplay.fill()">Fill</button>
+    <br><br>
+    <input id="text" type="text" name="text" value="10.Nightwish - ♥ - Kuolema_Tekee_Taiteilijan.mp3">
+    <button onclick="vledDiplay.drawText(document.getElementById('text').value, document.getElementById('startindex').valueAsNumber, document.getElementById('endindex').valueAsNumber)">Draw  </button> 
+    from <input type="number" id="startindex" value="0"> to <input type="number" id="endindex" value="-1">
+    <br><br>
     <input type="color" id="color" value="#ff0000" onchange="changeColor(this.value)">
-    <br>
-    <button onclick="clockRibbon()">Clock + ribbon</button><button onclick="changeClockRibbon()">Change ribbon</button>
+    <br><br>
+    <button onclick="clockRibbon()">Clock + ribbon</button> <button onclick="changeClockRibbon()">Change ribbon</button>
   </div>
-  <div id="demo"></div>
+
+  <div id="vledcontainer" class="center vledcontainer"></div>
+
+  <div id="output"></div>
   <!-- partial -->
   <script src="./xvirtualleddisplay.js"></script>
   <script src="./script.js"></script>

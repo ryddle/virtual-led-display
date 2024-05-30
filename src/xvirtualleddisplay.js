@@ -58,7 +58,8 @@ class XVirtualLedDisplay {
         'mode': 'production' // 'production' or 'development'    
     };
     constructor(container_, options_) {
-        this.matrix = container_;
+        this.container = container_!=null?container_:document.body;
+        this.#createMatrixContainer();
         if (options_ !== undefined && typeof (options_) == 'object') {
             Object.assign(this - this.#options, options_);
         }
@@ -105,6 +106,13 @@ class XVirtualLedDisplay {
         for (var i = 0; i < 7; i++) {
             this.mat[i] = this.newLine();
         }
+    }
+
+    #createMatrixContainer() {
+        this.matrix = document.createElement('div');
+        this.matrix.id='matrix';
+        this.matrix.className = 'matrix';
+        this.container.appendChild(this.matrix);
     }
 
     newLine() {

@@ -2,15 +2,6 @@
     --xvld-primary-color: 255, 0, 0;
 }
 
-.base {
-    display: inline-block;
-    border: 5px solid black;
-    padding: 10px;
-    background-color: #BBBBBB;
-    position: absolute;
-    text-align: center;
-}
-
 .matrix {
     width: 625px;
     height: 60px;
