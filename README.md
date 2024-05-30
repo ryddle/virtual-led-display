@@ -14,7 +14,7 @@ Originally created on CodePen.io. Original URL: [https://codepen.io/dogen-gen/pe
 * Add a click callback
 * Two modes, development and production
 * You can change the color on live
-(2024/05/30)
+* (2024/05/30)
 * Refactor, redesign, clean, fixes and improvements
 * Now you can set any with and height
 * Added new LCD simple display class
