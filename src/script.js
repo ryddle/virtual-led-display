@@ -18,9 +18,9 @@ changeColor = function (value) {
 }
 
 var vledDiplay1 = new XVirtualLedDisplay(vledcontainer, {width:1200, height:60});
-vledDiplay1.drawText("♦|♦|♦|♦|♦|♦|♦|♦|♦|♦|♦|♦|♦|♦|♦|");
+vledDiplay1.drawText("(♦)♦|♦|♦|♦|♦|♦|♦|♦|♦|♦|♦|♦|♦|♦|♦");
 
-var vledDiplay2 = new XVirtualLedDisplay(vledcontainer2, {width:1200, height:120});
+var vledDiplay2 = new XVirtualLedDisplay(vledcontainer2, {width:1200, height:120, mode: 'development'});
 vledDiplay2.drawText("♥♦|");
 
 var vledDiplay3 = new XVirtualLedDisplay(vledcontainer3, {width:1200, height:180});

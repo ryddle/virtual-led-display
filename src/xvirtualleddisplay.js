@@ -34,6 +34,8 @@ const letters = {
     '_': [[0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0, 1]],
     '/': [[0, 0, 0, 0, 0, 1, 1], [0, 0, 0, 0, 1, 0, 0], [0, 0, 0, 1, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0]],
     '|': [[0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 1, 1], [0, 0, 0, 0, 0, 0, 0]],
+    '(': [[0, 0, 1, 1, 1, 0, 0], [0, 1, 0, 0, 0, 1, 0], [1, 0, 0, 0, 0, 0, 1]],
+    ')': [[1, 0, 0, 0, 0, 0, 1], [0, 1, 0, 0, 0, 1, 0], [0, 0, 1, 1, 1, 0, 0]],
     '#': [[0, 0, 1, 0, 1, 0, 0], [1, 1, 1, 1, 1, 1, 1], [0, 0, 1, 0, 1, 0, 0], [1, 1, 1, 1, 1, 1, 1], [0, 0, 1, 0, 1, 0, 0]],
     '0': [[0, 1, 1, 1, 1, 1, 0], [1, 0, 0, 0, 1, 0, 1], [1, 0, 0, 1, 0, 0, 1], [1, 0, 1, 0, 0, 0, 1], [0, 1, 1, 1, 1, 1, 0]],
     '1': [[0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 1], [1, 1, 1, 1, 1, 1, 1], [0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0, 0]],
@@ -328,7 +330,7 @@ class XVirtualLedDisplay {
     moveLeft0() {
         for (var i = 0; i < this.mat.length; i++) {
             var first = this.mat[i][0].className;
-            for (var j = 0; j < this.mat[i].length - 1; j++){
+            for (var j = 0; j < this.mat[i].length - 1; j++) {
                 (this.mat[i][j + 1].className == "led") ? this.on(this.mat[i][j]) : this.off(this.mat[i][j]);
             }
             (first == "led") ? this.on(this.mat[i][this.mat[i].length - 1]) : this.off(this.mat[i][this.mat[i].length - 1]);
@@ -341,7 +343,7 @@ class XVirtualLedDisplay {
         for (var i = 0; i < this.mat.length; i++) {
             var calcLeftOffset = this.leftOffset + this.start_anim_index;
             for (var j = calcLeftOffset; j < this.mat[i].length + this.leftOffset - 1; j++) {
-                var _led =this.mat[i][(j - this.leftOffset) % this.vmatrowlength];
+                var _led = this.mat[i][(j - this.leftOffset) % this.vmatrowlength];
                 (this.vmat[i][((j - this.start_anim_index + 1) % (this.vmatrowlength)) + this.start_anim_index] == 1) ? this.on(_led) : this.off(_led);
             }
         }
@@ -356,8 +358,8 @@ class XVirtualLedDisplay {
 
         for (var i = 0; i < this.mat.length; i++) {
             var calcRightOffset = this.rightOffset + this.start_anim_index;
-            for (var j = calcRightOffset; j < this.mat[i].length + this.rightOffset - 1; j++){
-                var _led =this.mat[i][(j - this.rightOffset) % this.vmatrowlength];
+            for (var j = calcRightOffset; j < this.mat[i].length + this.rightOffset - 1; j++) {
+                var _led = this.mat[i][(j - this.rightOffset) % this.vmatrowlength];
                 (this.vmat[i][(j - (this.start_anim_index + 1)) % this.vmatrowlength] == 1) ? this.on(_led) : this.off(_led);
             }
         }
@@ -370,7 +372,7 @@ class XVirtualLedDisplay {
     moveRight0() {
         for (var i = 0; i < this.mat.length; i++) {
             var last = this.mat[i][this.mat[i].length - 1].className;
-            for (var j = this.mat[i].length - 1; j > 0; j--){
+            for (var j = this.mat[i].length - 1; j > 0; j--) {
                 (this.mat[i][j - 1].className == "led") ? this.on(this.mat[i][j]) : this.off(this.mat[i][j]);
             }
             (last == "led") ? this.on(this.mat[i][0]) : this.off(this.mat[i][0]);
@@ -378,16 +380,16 @@ class XVirtualLedDisplay {
     }
 
     clearM() {
-        for (var i = 0; i < this.mat.length; i++){
-            for (var j = 0; j < this.mat[i].length; j++){
+        for (var i = 0; i < this.mat.length; i++) {
+            for (var j = 0; j < this.mat[i].length; j++) {
                 this.off(this.mat[i][j]);
             }
         }
     }
 
     fill() {
-        for (var i = 0; i < this.mat.length; i++){
-            for (var j = 0; j < this.mat[i].length; j++){
+        for (var i = 0; i < this.mat.length; i++) {
+            for (var j = 0; j < this.mat[i].length; j++) {
                 this.on(this.mat[i][j]);
             }
         }
