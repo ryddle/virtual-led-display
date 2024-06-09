@@ -67,10 +67,10 @@ class XVirtualLcdElement {
             display: 'inline-flex'
         });
 
-        let thickness = this.width * 0.2;
+        let thickness = this.width * 0.25;
         let margin = this.width * 0.4;
 
-        this.leftTopSegment = new XVirtualLcdSegment(XVirtualLcdSegment.segment_type.LEFT, thickness, this.height / 2, this.color, this.bgColor);
+        this.leftTopSegment = new XVirtualLcdSegment(XVirtualLcdSegment.segment_type.LEFT_TOP, thickness, (this.height / 2)+(thickness/2), this.color, this.bgColor);
         this.leftTopSegmentElm = this.leftTopSegment.segment;
         this.leftTopSegmentElm.style.position = "absolute";
         this.leftTopSegmentElm.style.left = this.index * (this.width + margin) + "px";
@@ -84,7 +84,7 @@ class XVirtualLcdElement {
         this.topSegmentElm.style.top = "0px";
         this.elementContainer.appendChild(this.topSegmentElm);
 
-        this.rightTopSegment = new XVirtualLcdSegment(XVirtualLcdSegment.segment_type.RIGHT, thickness, this.height / 2, this.color, this.bgColor);
+        this.rightTopSegment = new XVirtualLcdSegment(XVirtualLcdSegment.segment_type.RIGHT_TOP, thickness, (this.height / 2)+(thickness/2), this.color, this.bgColor);
         this.rightTopSegmentElm = this.rightTopSegment.segment;
         this.rightTopSegmentElm.style.position = "absolute";
         this.rightTopSegmentElm.style.left = this.index * (this.width + margin) + this.width - thickness + "px";
@@ -95,10 +95,10 @@ class XVirtualLcdElement {
         this.middleSegmentElm = this.middleSegment.segment;
         this.middleSegmentElm.style.position = "absolute";
         this.middleSegmentElm.style.left = this.index * (this.width + margin) + "px";
-        this.middleSegmentElm.style.top = (this.height / 2) - (thickness / 4) + "px";
+        this.middleSegmentElm.style.top = (this.height / 2) + "px";
         this.elementContainer.appendChild(this.middleSegmentElm);
 
-        this.leftBottomSegment = new XVirtualLcdSegment(XVirtualLcdSegment.segment_type.LEFT, thickness, this.height / 2, this.color, this.bgColor);
+        this.leftBottomSegment = new XVirtualLcdSegment(XVirtualLcdSegment.segment_type.LEFT_BOTTOM, thickness, (this.height / 2)+(thickness/2), this.color, this.bgColor);
         this.leftBottomSegmentElm = this.leftBottomSegment.segment;
         this.leftBottomSegmentElm.style.position = "absolute";
         this.leftBottomSegmentElm.style.left = this.index * (this.width + margin) + "px";
@@ -112,14 +112,14 @@ class XVirtualLcdElement {
         this.bottomSegmentElm.style.bottom = "0px";
         this.elementContainer.appendChild(this.bottomSegmentElm);
 
-        this.rightBottomSegment = new XVirtualLcdSegment(XVirtualLcdSegment.segment_type.RIGHT, thickness, this.height / 2, this.color, this.bgColor);
+        this.rightBottomSegment = new XVirtualLcdSegment(XVirtualLcdSegment.segment_type.RIGHT_BOTTOM, thickness, (this.height / 2)+(thickness/2), this.color, this.bgColor);
         this.rightBottomSegmentElm = this.rightBottomSegment.segment;
         this.rightBottomSegmentElm.style.position = "absolute";
         this.rightBottomSegmentElm.style.left = this.index * (this.width + margin) + this.width - thickness + "px";
         this.rightBottomSegmentElm.style.bottom = "0px";
         this.elementContainer.appendChild(this.rightBottomSegmentElm);
 
-        this.twoPointsSegment = new XVirtualLcdSegment(XVirtualLcdSegment.segment_type.TWO_POINTs, thickness, this.height/2, this.color, this.bgColor);
+        this.twoPointsSegment = new XVirtualLcdSegment(XVirtualLcdSegment.segment_type.TWO_POINTS, thickness, this.height/2, this.color, this.bgColor);
         this.twoPointsSegmentElm = this.twoPointsSegment.segment;
         this.twoPointsSegmentElm.style.position = "absolute";
         this.twoPointsSegmentElm.style.left = this.index * (this.width + margin) + (this.width / 2 - (thickness / 2)) + "px";
@@ -142,7 +142,7 @@ class XVirtualLcdElement {
 }
 
 class XVirtualLcdSegment {
-    static segment_type = { LEFT: 0, RIGHT: 1, TOP: 2, BOTTOM: 3, MIDDLE: 4, TWO_POINTs: 5 };
+    static segment_type = { LEFT_TOP: 0, LEFT_BOTTOM: 1, RIGHT_TOP: 2, RIGHT_BOTTOM: 3, TOP: 4, BOTTOM: 5, MIDDLE: 6, TWO_POINTS: 7 };
     constructor(type, width, height, color, bgColor) {
         this.type = type;
         this.width = width;
@@ -150,11 +150,17 @@ class XVirtualLcdSegment {
         this.color = color;
         this.bgColor = bgColor;
     
-        if (this.type == XVirtualLcdSegment.segment_type.LEFT) {
-            this.segment = this.createLeftSegment();
+        if (this.type == XVirtualLcdSegment.segment_type.LEFT_TOP) {
+            this.segment = this.createLeftTopSegment();
         }
-        if (this.type == XVirtualLcdSegment.segment_type.RIGHT) {
-            this.segment = this.createRightSegment();
+        if (this.type == XVirtualLcdSegment.segment_type.LEFT_BOTTOM) {
+            this.segment = this.createLeftBottomSegment();
+        }
+        if (this.type == XVirtualLcdSegment.segment_type.RIGHT_TOP) {
+            this.segment = this.createRightTopSegment();
+        }
+        if (this.type == XVirtualLcdSegment.segment_type.RIGHT_BOTTOM) {
+            this.segment = this.createRightBottomSegment();
         }
         if (this.type == XVirtualLcdSegment.segment_type.TOP) {
             this.segment = this.createTopSegment();
@@ -165,14 +171,14 @@ class XVirtualLcdSegment {
         if (this.type == XVirtualLcdSegment.segment_type.MIDDLE) {
             this.segment = this.createMiddleSegment();
         }
-        if (this.type == XVirtualLcdSegment.segment_type.TWO_POINTs) {
+        if (this.type == XVirtualLcdSegment.segment_type.TWO_POINTS) {
             this.segment = this.createTwoPointsSegment();
         }
 
         return this;
     }
 
-    createLeftSegment() {
+    createLeftTopSegment() {
         var vsegment = document.createElement("div");
         Object.assign(vsegment.style, {
             width: this.width + "px",
@@ -183,7 +189,29 @@ class XVirtualLcdSegment {
         return vsegment;
     }
 
-    createRightSegment() {
+    createLeftBottomSegment() {
+        var vsegment = document.createElement("div");
+        Object.assign(vsegment.style, {
+            width: this.width + "px",
+            height: this.height + "px",
+            backgroundColor: this.color,
+            clipPath: "polygon(0% 0%, 100% 30%, 100% 70%, 0% 100%)"
+        });
+        return vsegment;
+    }
+
+    createRightTopSegment() {
+        var vsegment = document.createElement("div");
+        Object.assign(vsegment.style, {
+            width: this.width + "px",
+            height: this.height + "px",
+            backgroundColor: this.color,
+            clipPath: "polygon(100% 0%, 100% 100%, 0% 70%, 0% 30%)"
+        });
+        return vsegment;
+    }
+
+    createRightBottomSegment() {
         var vsegment = document.createElement("div");
         Object.assign(vsegment.style, {
             width: this.width + "px",
