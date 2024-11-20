@@ -21,7 +21,7 @@
   </a>
   <h1 style>Virtual Led Display</h1>
   <div id="base" class="base">
-    VLed1:<input type="radio" id="vled1" name="vled" value="vledDiplay1" checked> VLed2:<input type="radio" id="vled1" name="vled" value="vledDiplay2"> VLed3:<input type="radio" id="vled1" name="vled" value="vledDiplay3">
+    VLed1:<input type="radio" id="vled1" name="vled" value="vledDisplay1" checked> VLed2:<input type="radio" id="vled1" name="vled" value="vledDisplay2"> VLed3:<input type="radio" id="vled1" name="vled" value="vledDisplay3">
     <br><br>
     <input type="number" id="pixels" value="5"> <button onclick="getCoordsChar(document.getElementById('pixels').valueAsNumber)">Get coords</button>
     <br><br>
@@ -29,6 +29,9 @@
     <input type="number" id="startanimindex" value="0">
     <button onclick="rotate('right')">Right</button>
     <button onclick="stop()">Stop</button>
+    <br><br>
+    Speed(50-1000ms): <input type="range" id="speed" value="100" min="50" max="1000" step="20" style="width: 400px;" oninput="changeSpeed(this.valueAsNumber)">
+    SpreadFactor(0-1): <input type="range" id="spread" value="0.3" min="0" max="1" step="0.1" style="width: 400px;" oninput="changeSpreadFactor(this.valueAsNumber)">
     <br><br>
     <button onclick="clearVLD()">Clear</button>
     <button onclick="fill()">Fill</button>

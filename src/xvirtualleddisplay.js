@@ -65,13 +65,16 @@ class XVirtualLedDisplay {
         'mode': 'production', // 'production' or 'development'
         'width': 625,
         'height': 60,
-        'rotationSpeed': 100
+        'rotationSpeed': 100,
+        'spreadFactor': 0.3 /* 0.0 - 1.0 */
     };
     constructor(container_, options_) {
         this.container = container_ != null ? container_ : document.body;
         if (options_ !== undefined && typeof (options_) == 'object') {
             Object.assign(this.#options, options_);
         }
+
+        this.#options.spreadFactor = this.#options.spreadFactor < 0 ? 0 : this.#options.spreadFactor > 1 ? 1 : this.#options.spreadFactor;
 
         this.lineheight = 5;
         this.rowlength = 7;
@@ -188,9 +191,9 @@ class XVirtualLedDisplay {
     on(led) {
         led.className = "led";
         Object.assign(led.style, {
-            WebkitBoxShadow: '0px 0px ' + this.lineheight * 1.6 + 'px ' + this.lineheight * 0.6 + 'px rgba(var(--primary-color, var(--xvld-primary-color, rgb(255, 0, 0))), .75)',
-            MozBoxShadow: '0px 0px ' + this.lineheight * 1.6 + 'px ' + this.lineheight * 0.6 + 'px rgba(var(--primary-color, var(--xvld-primary-color, rgb(255, 0, 0))), .75)',
-            boxShadow: '0px 0px ' + this.lineheight * 1.6 + 'px ' + this.lineheight * 0.6 + 'px rgba(var(--primary-color, var(--xvld-primary-color, rgb(255, 0, 0))), .75)'
+            WebkitBoxShadow: '0px 0px ' + this.lineheight * 1 + 'px ' + this.lineheight * this.#options.spreadFactor + 'px rgba(var(--primary-color-rgb, var(--xvld-primary-color, rgb(255, 0, 0))), .75)',
+            MozBoxShadow: '0px 0px ' + this.lineheight * 1 + 'px ' + this.lineheight * this.#options.spreadFactor + 'px rgba(var(--primary-color-rgb, var(--xvld-primary-color, rgb(255, 0, 0))), .75)',
+            boxShadow: '0px 0px ' + this.lineheight * 1 + 'px ' + this.lineheight * this.#options.spreadFactor + 'px rgba(var(--primary-color-rgb, var(--xvld-primary-color, rgb(255, 0, 0))), .75)'
         });
     }
 
@@ -320,13 +323,14 @@ class XVirtualLedDisplay {
 
     rotate(dir, start_anim_index_) {
         var self = this;
+        this.dir = dir== "left" ? "left" : "right";
         this.start_anim_index = start_anim_index_ || this.start_anim_index;
-        if (dir == "left" && this.rotationL == 0) {
+        if (this.dir == "left" && this.rotationL == 0) {
             this.rotationL = setInterval(function () { self.moveLeft() }, this.#options.rotationSpeed);
             clearInterval(this.rotationR);
             this.rotationR = 0;
         }
-        else if (dir == "right" && this.rotationR == 0) {
+        else if (this.dir == "right" && this.rotationR == 0) {
             this.rotationR = setInterval(function () { self.moveRight() }, this.#options.rotationSpeed);
             clearInterval(this.rotationL);
             this.rotationL = 0;
@@ -398,6 +402,47 @@ class XVirtualLedDisplay {
             for (var j = 0; j < this.mat[i].length; j++) {
                 this.on(this.mat[i][j]);
             }
+        }
+    }
+
+    getSpeed() {
+        return this.#options.rotationSpeed;
+    }
+
+    setSpeed(speed) {
+        if (speed && typeof speed == 'number' && speed > 0) {
+            this.#options.rotationSpeed = speed;
+            self = this;
+            if (this.dir == "left") {
+                clearInterval(this.rotationL);
+                this.rotationL = setInterval(function () { self.moveLeft() }, this.#options.rotationSpeed);
+                clearInterval(this.rotationR);
+                this.rotationR = 0;
+            }
+            else if (this.dir == "right") {
+                clearInterval(this.rotationR);
+                this.rotationR = setInterval(function () { self.moveRight() }, this.#options.rotationSpeed);
+                clearInterval(this.rotationL);
+                this.rotationL = 0;
+            }
+        }
+    }
+
+    getSpreadFactor() {
+        return this.#options.spreadFactor;
+    }
+
+    setSpreadFactor(spreadFactor) {
+        if(spreadFactor && typeof spreadFactor == 'number' && spreadFactor >= 0 && spreadFactor <= 1){
+            this.#options.spreadFactor = spreadFactor;
+
+            if(this.dir!=="left" && this.dir!=="right"){
+                let onleds = selectedVledDisplay.container.querySelectorAll(".led:not(.off)");
+                for (var i = 0; i < onleds.length; i++) {
+                    onleds[i].style.boxShadow = '0px 0px ' + this.lineheight * 1 + 'px ' + this.lineheight * this.#options.spreadFactor + 'px rgba(var(--primary-color-rgb, var(--xvld-primary-color, rgb(255, 0, 0))), .75)';
+                }
+            }
+                
         }
     }
 
