@@ -127,6 +127,7 @@ class XVirtualLedDisplay {
         this.matrix.id = 'matrix';
         this.matrix.className = 'matrix';
         this.matrix.style.alignContent = 'center';
+        this.matrix.style.boxSizing = 'unset';
         if (this.#options.width) {
             this.matrix.style.width = this.#options.width + 'px';
         }
@@ -143,6 +144,26 @@ class XVirtualLedDisplay {
         this.matrix.style.lineHeight = '0.8em';
 
         this.container.appendChild(this.matrix);
+    }
+
+    resizeMatrix(width, height) {
+        this.matrix.style.width = width + 'px';
+        this.matrix.style.height = height + 'px';
+        this.lineheight = Math.floor((height - (this.rowlength * 2)) / this.rowlength);
+        this.collength = Math.floor(width / (this.lineheight + 2));
+        var root = document.querySelector(':root');
+        var rs = getComputedStyle(root);
+        root.style.setProperty('--lineheight', this.lineheight + 'px');
+        this.matrix.style.fontSize = this.lineheight + 'px';
+        this.matrix.style.lineHeight = '0.8em';
+
+        this.matrix.innerHTML = '';
+
+        this.mat = Array2D(this.rowlength, this.collength);
+        this.vmat = new Array();
+        for (var i = 0; i < 7; i++) {
+            this.mat[i] = this.newLine();
+        }
     }
 
     #createLed() {
