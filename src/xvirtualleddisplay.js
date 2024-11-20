@@ -64,7 +64,8 @@ class XVirtualLedDisplay {
     #options = {
         'mode': 'production', // 'production' or 'development'
         'width': 625,
-        'height': 60
+        'height': 60,
+        'rotationSpeed': 100
     };
     constructor(container_, options_) {
         this.container = container_ != null ? container_ : document.body;
@@ -189,7 +190,7 @@ class XVirtualLedDisplay {
         Object.assign(led.style, {
             WebkitBoxShadow: '0px 0px ' + this.lineheight * 1.6 + 'px ' + this.lineheight * 0.6 + 'px rgba(var(--primary-color, var(--xvld-primary-color, rgb(255, 0, 0))), .75)',
             MozBoxShadow: '0px 0px ' + this.lineheight * 1.6 + 'px ' + this.lineheight * 0.6 + 'px rgba(var(--primary-color, var(--xvld-primary-color, rgb(255, 0, 0))), .75)',
-            boxShadow: '0px 0px ' + this.lineheight * 1 + 'px ' + this.lineheight * 0.2 + 'px rgba(var(--primary-color, var(--xvld-primary-color, rgb(255, 0, 0))), .75)'
+            boxShadow: '0px 0px ' + this.lineheight * 1.6 + 'px ' + this.lineheight * 0.6 + 'px rgba(var(--primary-color, var(--xvld-primary-color, rgb(255, 0, 0))), .75)'
         });
     }
 
@@ -321,12 +322,12 @@ class XVirtualLedDisplay {
         var self = this;
         this.start_anim_index = start_anim_index_ || this.start_anim_index;
         if (dir == "left" && this.rotationL == 0) {
-            this.rotationL = setInterval(function () { self.moveLeft() }, 100);
+            this.rotationL = setInterval(function () { self.moveLeft() }, this.#options.rotationSpeed);
             clearInterval(this.rotationR);
             this.rotationR = 0;
         }
         else if (dir == "right" && this.rotationR == 0) {
-            this.rotationR = setInterval(function () { self.moveRight() }, 100);
+            this.rotationR = setInterval(function () { self.moveRight() }, this.#options.rotationSpeed);
             clearInterval(this.rotationL);
             this.rotationL = 0;
         }
