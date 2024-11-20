@@ -99,10 +99,12 @@ function changeClockRibbon() {
 
 function changeSpeed(speed) {
   selectedVledDisplay.setSpeed(speed);
+  document.getElementById("speedout").value = speed;
 }
 
 function changeSpreadFactor(spreadFactor) {
   selectedVledDisplay.setSpreadFactor(spreadFactor);
+  document.getElementById("spreadout").value = spreadFactor;
 }
 
 function clockTimer() {

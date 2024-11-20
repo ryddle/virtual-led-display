@@ -30,8 +30,8 @@
     <button onclick="rotate('right')">Right</button>
     <button onclick="stop()">Stop</button>
     <br><br>
-    Speed(50-1000ms): <input type="range" id="speed" value="100" min="50" max="1000" step="20" style="width: 400px;" oninput="changeSpeed(this.valueAsNumber)">
-    SpreadFactor(0-1): <input type="range" id="spread" value="0.3" min="0" max="1" step="0.1" style="width: 400px;" oninput="changeSpreadFactor(this.valueAsNumber)">
+    Speed(50-1000ms): <input type="range" id="speed" value="100" min="50" max="1000" step="10" style="width: 400px;" oninput="changeSpeed(this.valueAsNumber)"><output id="speedout" value="100">100</output>
+    SpreadFactor(0-1): <input type="range" id="spread" value="0.3" min="0" max="1" step="0.1" style="width: 400px;" oninput="changeSpreadFactor(this.valueAsNumber)"><output id="spreadout" value="0.3">0.3</output>
     <br><br>
     <button onclick="clearVLD()">Clear</button>
     <button onclick="fill()">Fill</button>
